@@ -1,8 +1,39 @@
 # CareFlow Ingress Manifest
-# Write your NGINX Ingress resource definition here.
-# Configure path routing:
-#   - /api/auth/* -> auth-service
-#   - /api/appointments/* -> appointment-service
-#   - /api/billing/* -> billing-service
-#   - /* -> frontend-ui
-# Add ACM cert annotations for TLS termination.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: careflow-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /api/auth
+        pathType: Prefix
+        backend:
+          service:
+            name: auth-service
+            port:
+              number: 8000
+      - path: /api/appointments
+        pathType: Prefix
+        backend:
+          service:
+            name: appointment-service
+            port:
+              number: 8080
+      - path: /api/billing
+        pathType: Prefix
+        backend:
+          service:
+            name: billing-service
+            port:
+              number: 6000
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend-ui
+            port:
+              number: 80

@@ -1,3 +1,71 @@
 # Appointment Service Deployment and Service
-# Write your Kubernetes Deployment and Service definitions for the Java Spring Boot application.
-# Include environment variable bindings for database configuration (retrieved from the ESO secret).
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appointment-service
+  labels:
+    app: appointment-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: appointment-service
+  template:
+    metadata:
+      labels:
+        app: appointment-service
+    spec:
+      containers:
+      - name: appointment-service
+        image: appointment-service:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: "prod"
+        - name: DB_HOST
+          value: "rds-postgres-db"
+        - name: DB_PORT
+          value: "5432"
+        - name: DB_NAME
+          value: "careflow_db"
+        - name: DB_USER
+          valueFrom: 
+            secretKeyRef:
+              name: careflow-secrets
+              key: db-user
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: careflow-secrets
+              key: db-password
+        - name: NOTIFICATION_SERVICE_URL
+          value: "http://notification-service:5000/api/notify/send"
+        - name: BILLING_SERVICE_URL
+          value: "http://billing-service:6000/api/billing/invoice"
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "200m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: appointment-service
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8080
+    targetPort: 8080
+    protocol: TCP
+  selector:
+    app: appointment-service
+
+
+     
