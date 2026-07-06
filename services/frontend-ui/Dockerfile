@@ -1,3 +1,24 @@
 # Frontend UI Dockerfile
-# Write a multi-stage Dockerfile to build and package this React/Vite application.
-# Tip: Build the React static assets in Node (stage 1) and copy them to an Nginx image (stage 2) configured with reverse-proxy routing rules.
+# --- Stage 1: Build static assets ---
+
+FROM node:20-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+
+# --- Stage 2: Serve static files with Nginx ---
+FROM nginx:1.25-alpine
+
+#copy the built React application files the builder stage
+
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+#Copy the custom Nginx configuration
+COPY  nginx.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 80
+CMD [ "nginx", "-g" , "daemon off;" ]
+
+
