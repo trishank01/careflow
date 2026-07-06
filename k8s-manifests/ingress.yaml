@@ -1,0 +1,8 @@
+# CareFlow Ingress Manifest
+# Write your NGINX Ingress resource definition here.
+# Configure path routing:
+#   - /api/auth/* -> auth-service
+#   - /api/appointments/* -> appointment-service
+#   - /api/billing/* -> billing-service
+#   - /* -> frontend-ui
+# Add ACM cert annotations for TLS termination.

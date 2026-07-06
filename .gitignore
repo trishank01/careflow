@@ -1,0 +1,52 @@
+# CareFlow Global .gitignore
+
+# ── General ───────────────────────────
+.DS_Store
+Thumbs.db
+*.log
+*.env
+.env*
+scratch/
+
+# ── Python / FastAPI (Auth & SRE Agent) ─────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+env/
+.pytest_cache/
+.chroma/
+
+# ── Node.js / React (Frontend, Billing, Notification) ─────────────
+node_modules/
+dist/
+build/
+.npm
+.eslintcache
+package-lock.json
+
+# ── Java / Spring Boot (Appointment) ────────────────
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/resources/*.properties
+*.class
+.mtj.tmp/
+*.jar
+*.war
+*.ear
+*.db
+
+# ── IDEs / Editors ───────────────────
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+
+# -- Other ----
+plan/

@@ -1,0 +1,3 @@
+# Appointment Service Deployment and Service
+# Write your Kubernetes Deployment and Service definitions for the Java Spring Boot application.
+# Include environment variable bindings for database configuration (retrieved from the ESO secret).
