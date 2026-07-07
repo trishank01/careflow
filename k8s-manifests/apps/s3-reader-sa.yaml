@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: careflow-s3-reader-sa
+  namespace: default
+  annotations:
+    # Replace with your actual IAM role ARN from Terraform outputs (s3_reader_role_arn)
+    eks.amazonaws.com/role-arn: "arn:aws:iam::123456789012:role/dev-careflow-s3-reader-role"

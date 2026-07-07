@@ -1,3 +1,92 @@
-# AI SRE Agent Deployment and Service
-# Write your Kubernetes Deployment, ServiceAccount, and ClusterRole/ClusterRoleBinding definitions for the AI SRE Agent.
-# Grant read-only permissions for log and status queries on pods across namespaces.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: monitoring
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ai-sre-agent
+  namespace: monitoring
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: ai-sre-agent-role
+rules:
+- apiGroups: [""]
+  resources: ["pods", "pods/log", "pods/status"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: [""]
+  resources: ["events"]
+  verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: ai-sre-agent-binding
+subjects:
+- kind: ServiceAccount
+  name: ai-sre-agent
+  namespace: monitoring
+roleRef:
+  kind: ClusterRole
+  name: ai-sre-agent-role
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai-sre-agent
+  namespace: monitoring
+  labels:
+    app: ai-sre-agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ai-sre-agent
+  template:
+    metadata:
+      labels:
+        app: ai-sre-agent
+    spec:
+      serviceAccountName: ai-sre-agent
+      containers:
+      - name: ai-sre-agent
+        image: ai-sre-agent:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8090
+        env:
+        - name: OPENAI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: monitoring-secrets
+              key: openai-api-key
+        - name: SLACK_WEBHOOK_URL
+          valueFrom:
+            secretKeyRef:
+              name: monitoring-secrets
+              key: slack-webhook-url
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "200m"
+            memory: "256Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ai-sre-agent
+  namespace: monitoring
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8090
+    targetPort: 8090
+    protocol: TCP
+  selector:
+    app: ai-sre-agent

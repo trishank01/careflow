@@ -27,3 +27,18 @@ output "oidc_provider_arn" {
   description = "The ARN of the OIDC Provider for EKS cluster"
   value       = module.eks.oidc_provider_arn
 }
+
+output "s3_bucket_name" {
+  description = "The name of the S3 bucket for CareFlow app storage"
+  value       = aws_s3_bucket.app_storage.id
+}
+
+output "s3_reader_role_arn" {
+  description = "The ARN of the IAM Role for the careflow-s3-reader-sa ServiceAccount (IRSA)"
+  value       = module.irsa_role.iam_role_arn
+}
+
+output "github_actions_role_arn" {
+  description = "The ARN of the IAM Role for GitHub Actions OIDC access"
+  value       = aws_iam_role.github_actions.arn
+}
