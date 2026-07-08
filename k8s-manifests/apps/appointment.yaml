@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: appointment-service
-        image: appointment-service:latest
+        image: 925216254901.dkr.ecr.us-east-2.amazonaws.com/appointment-service:ea634fb3e3dff52fe403d86fbf9535d9b4041b0a
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
