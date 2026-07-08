@@ -124,3 +124,61 @@ resource "aws_iam_role_policy_attachment" "github_ecr" {
   role       = aws_iam_role.github_actions.name
   policy_arn = aws_iam_policy.github_ecr_policy.arn
 }
+
+# IAM Policy for SSM Parameter Store read access
+resource "aws_iam_policy" "ssm_read_policy" {
+  name        = "${var.environment}-careflow-ssm-read-policy"
+  description = "Allows EKS pods to read parameters from AWS SSM Parameter Store"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "ssm:GetParameter",
+          "ssm:GetParameters",
+          "ssm:GetParametersByPath"
+        ]
+        Resource = [
+          "arn:aws:ssm:us-east-2:925216254901:parameter/careflow/*"
+        ]
+      }
+    ]
+  })
+}
+
+# EKS IRSA Role for External Secrets Operator
+module "external_secrets_irsa_role" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "~> 5.0"
+
+  role_name = "${var.environment}-careflow-ssm-reader-role"
+
+  role_policy_arns = {
+    ssm_read = aws_iam_policy.ssm_read_policy.arn
+  }
+
+  oidc_providers = {
+    main = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["external-secrets:external-secrets-sa"]
+    }
+  }
+}
+
+# EKS IRSA Role for EBS CSI Driver
+module "ebs_csi_irsa_role" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "~> 5.0"
+
+  role_name             = "${var.environment}-careflow-ebs-csi-role"
+  attach_ebs_csi_policy = true
+
+  oidc_providers = {
+    main = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["kube-system:aws-ebs-csi-controller-sa"]
+    }
+  }
+}
