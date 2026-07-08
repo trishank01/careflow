@@ -13,9 +13,9 @@ terraform {
 
   # Note: Ensure this bucket and DynamoDB table are created beforehand or use a local backend if running locally.
   backend "s3" {
-    bucket         = "careflow-terraform-state-bucket"
+    bucket         = "careflow-terraform-state-bucket-925216254901"
     key            = "dev/careflow.tfstate"
-    region         = "us-east-1"
+    region         = "us-east-2"
     dynamodb_table = "careflow-terraform-state-lock"
     encrypt        = true
   }
