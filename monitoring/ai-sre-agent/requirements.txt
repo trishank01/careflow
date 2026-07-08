@@ -3,6 +3,7 @@ uvicorn
 pydantic
 langchain
 langchain-openai
+langchain-community
 chromadb
 kubernetes
 requests
