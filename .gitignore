@@ -49,6 +49,7 @@ target/
 
 # -- Other ----
 plan/
+learning/
 
 # ── Terraform ─────────────────────────
 .terraform/
