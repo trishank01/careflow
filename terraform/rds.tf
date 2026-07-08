@@ -23,9 +23,8 @@ resource "aws_security_group" "rds" {
   }
 }
 
-resource "random_password" "db_password" {
-  length  = 16
-  special = false
+data "aws_ssm_parameter" "db_password" {
+  name = "/careflow/dev/db/password"
 }
 
 resource "aws_db_instance" "postgres" {
@@ -39,7 +38,7 @@ resource "aws_db_instance" "postgres" {
 
   db_name  = var.db_name
   username = var.db_user
-  password = random_password.db_password.result
+  password = data.aws_ssm_parameter.db_password.value
 
   db_subnet_group_name   = module.vpc.database_subnet_group_name
   vpc_security_group_ids = [aws_security_group.rds.id]
