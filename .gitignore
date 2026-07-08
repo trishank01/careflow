@@ -25,7 +25,6 @@ dist/
 build/
 .npm
 .eslintcache
-package-lock.json
 
 # ── Java / Spring Boot (Appointment) ────────────────
 target/

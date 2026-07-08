@@ -66,4 +66,5 @@ jobs:
           sed -i "s|image: .*frontend-ui:.*|image: $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG|g" k8s-manifests/apps/frontend.yaml
           git add k8s-manifests/apps/frontend.yaml
           git commit -m "chore(gitops): update frontend-ui image tag to $IMAGE_TAG [skip ci]"
+          git pull origin main --rebase
           git push origin main
