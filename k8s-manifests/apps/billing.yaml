@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: billing-service
-        image: billing-service:latest
+        image: 925216254901.dkr.ecr.us-east-2.amazonaws.com/billing-service:ea634fb3e3dff52fe403d86fbf9535d9b4041b0a
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 6000
