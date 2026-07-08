@@ -17,7 +17,7 @@ app.post('/api/notify/send', (req, res) => {
   const appStatus = status || 'Pending';
   const docName = doctorName || 'Doctor';
 
-  // Format alert message depending on status
+  // Format alert message depending on status check
   if (appStatus === 'Confirmed' || appStatus === 'Approved') {
     console.log(`[ALERT] Email/SMS sent to ${patientName}: Your appointment with ${docName} is Confirmed!`);
   } else if (appStatus === 'Rejected') {

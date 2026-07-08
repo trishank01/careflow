@@ -19,7 +19,7 @@ function App() {
   const [message, setMessage] = useState('')
   const [fetchError, setFetchError] = useState('')
 
-  // Determine user role and mapping
+  // Determine user role and mapping state
   const loggedInUser = localStorage.getItem('username') || ''
   const isDoctor = role === 'doctor'
   

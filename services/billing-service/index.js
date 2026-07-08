@@ -40,7 +40,7 @@ app.post('/api/billing/invoice', (req, res) => {
 
   INVOICES.push(newInvoice);
 
-  // Console output action for observability check
+  // Console output action for observability checks
   console.log(`[BILLING] Mock invoice generated for patient ${patientName} - Total: $${amount.toFixed(2)} (Invoice ID: ${invoiceId})`);
 
   res.json({

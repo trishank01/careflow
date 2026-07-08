@@ -22,7 +22,8 @@ USERS = {
     "ajay": {"password": "patient123", "role": "patient"},
     "harsh": {"password": "patient123", "role": "patient"},
     "aman": {"password": "patient123", "role": "patient"},
-    "alok": {"password": "patient123", "role": "patient"}
+    "alok": {"password": "patient123", "role": "patient"},
+     "harsh": {"password": "patient123", "role": "patient"}
 }
 
 @app.get("/api/auth/health")
