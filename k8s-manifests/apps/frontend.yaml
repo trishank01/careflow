@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: frontend-ui
-        image: frontend-ui:latest
+        image: 925216254901.dkr.ecr.us-east-2.amazonaws.com/frontend-ui:ea634fb3e3dff52fe403d86fbf9535d9b4041b0a
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80
