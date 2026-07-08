@@ -26,15 +26,6 @@ module "eks" {
   enable_irsa = true
 
   cluster_addons = {
-    coredns = {
-      most_recent = true
-    }
-    kube-proxy = {
-      most_recent = true
-    }
-    vpc-cni = {
-      most_recent = true
-    }
     aws-ebs-csi-driver = {
       most_recent              = true
       service_account_role_arn = module.ebs_csi_irsa_role.iam_role_arn
