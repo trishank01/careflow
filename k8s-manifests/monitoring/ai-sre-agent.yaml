@@ -54,7 +54,7 @@ spec:
       serviceAccountName: ai-sre-agent
       containers:
       - name: ai-sre-agent
-        image: ai-sre-agent:latest
+        image: 925216254901.dkr.ecr.us-east-2.amazonaws.com/ai-sre-agent:f9d54c92d16b497a7a6d15e3e6aedac90719d753
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8090
